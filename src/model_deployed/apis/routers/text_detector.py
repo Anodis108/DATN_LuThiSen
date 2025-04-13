@@ -103,7 +103,7 @@ async def text_detect(inputs: APIInput = Body(...)):
     )
 
     # Kiểm tra đầu vào hợp lệ
-    if inputs is None or not inputs.img:
+    if inputs is None or not inputs.image:
         return exception_handler.handle_bad_request(
             'Invalid image data',
             jsonable_encoder(inputs),
@@ -112,32 +112,51 @@ async def text_detect(inputs: APIInput = Body(...)):
     try:
         logger.info(f'Processing text detection for input: {inputs}')
 
-        # Chuyển đổi ảnh từ list về numpy array
-        img_array = np.array(inputs.img, dtype=np.uint8)
+        # Chuyển ảnh và bbox sang numpy
+        img_array = np.array(inputs.image, dtype=np.uint8)
+        bbox_np = np.array(inputs.bbox, dtype=np.int32)
 
-        # Gọi model phát hiện văn bản
+        if img_array.ndim != 3:
+            raise ValueError('Input image must be a 3D RGB array')
+
+        if bbox_np.shape != (4,):
+            raise ValueError('Bounding box must be a list of 4 float values')
+
+        # Gọi model xử lý
         response = await text_detector_model.process(
             inputs=TextDetectorModelInput(
-                img=img_array,
+                img_origin=img_array,
+                bbox=bbox_np,
             ),
         )
 
-        # Kiểm tra kết quả phát hiện văn bản
         if not response.bboxes_list:
             return exception_handler.handle_unprocessable_entity(
                 'No text detected in the image',
                 jsonable_encoder(inputs),
             )
 
-        # Trả về kết quả
+        # Tạo response model
         api_output = APIOutput(
-            bboxes=response.bboxes_list,  # type: ignore
-            classes=response.class_list,  # type: ignore
-            confs=response.conf_list,  # type: ignore
+            bboxes=response.bboxes_list,
+            classes=response.class_list,
+            confs=response.conf_list,
         )
 
         logger.info('Text detection completed successfully.')
         return exception_handler.handle_success(jsonable_encoder(api_output))
+
+    except ValueError as ve:
+        return exception_handler.handle_bad_request(str(ve), jsonable_encoder(inputs))
+
+    except TypeError as te:
+        return exception_handler.handle_bad_request(str(te), jsonable_encoder(inputs))
+
+    except FileNotFoundError as fnf:
+        return exception_handler.handle_not_found_error(str(fnf), jsonable_encoder(inputs))
+
+    except RuntimeError as re:
+        return exception_handler.handle_exception(str(re), jsonable_encoder(inputs))
 
     except Exception as e:
         logger.exception(

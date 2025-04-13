@@ -112,13 +112,18 @@ async def text_to_ocr(inputs: APIInput = Body(...)):
     try:
         # Convert input image to numpy array
         img_array = np.array(inputs.img, dtype=np.uint8)
+        bbox_np = np.array(inputs.bbox, dtype=np.int32)
 
         # Log processing start
         logger.info('Starting OCR processing...')
 
         # Process image with OCR model
         response = await text_ocr_model.process(
-            inputs=TextOCRModelInput(img=img_array),
+            inputs=TextOCRModelInput(
+                img=img_array,
+                class_list=inputs.classes,
+                bboxes_list=bbox_np,
+            ),
         )
 
         # Check if OCR found any text
@@ -129,9 +134,16 @@ async def text_to_ocr(inputs: APIInput = Body(...)):
             )
 
         # Format response
-        api_output = APIOutput(
-            texts=response.text,
-        )
+        info = [
+            {
+                'class_name': r['class'],
+                'bounding_box': r['bounding_box'],
+                'text': r['text'],
+            }
+            for r in response.results
+        ]
+
+        api_output = APIOutput(info=info)
 
         logger.info('OCR processing completed successfully.')
         return exception_handler.handle_success(jsonable_encoder(api_output))

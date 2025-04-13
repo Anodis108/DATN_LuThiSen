@@ -6,8 +6,8 @@ from typing import List
 import numpy as np
 from common.bases import BaseModel
 from common.bases import BaseService
+from common.logs.logs import get_logger
 from common.settings import Settings
-from model_deployed.common.logs.logs import get_logger
 from ultralytics import YOLO
 
 from ..card_align import CardAlignModel
@@ -20,13 +20,13 @@ logger = get_logger(__name__)
 
 class TextDetectorModelInput(BaseModel):
     img_origin: np.ndarray
-    bbox: List[int]
+    bbox: np.ndarray
     # max_num: int = 0
 
 
 class TextDetectorModelOutput(BaseModel):
     class_list: List[str]
-    bboxes_list: List[List[float]]
+    bboxes_list: List[np.ndarray]
     conf_list: List[float]
     processed_image: np.ndarray
 

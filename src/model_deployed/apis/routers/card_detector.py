@@ -125,7 +125,8 @@ async def card_detect(file: UploadFile = File(...)):
         )
         # handle response
         api_output = APIOutput(
-            bboxes=response.bboxes.tolist(),  # type: ignore
+            bboxes=response.bboxes.tolist(),  # đảm bảo trả về dạng list[list]
+            scores=response.scores.tolist(),  # nếu có scores
         )
         return exception_handler.handle_success(jsonable_encoder(api_output))
     except Exception as e:

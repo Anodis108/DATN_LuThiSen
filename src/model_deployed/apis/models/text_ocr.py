@@ -15,4 +15,10 @@ class APIInput(BaseModel):
 
 
 class APIOutput(BaseModel):
-    info: List[str]
+    info: List[OCRResult]
+
+
+class OCRResult(BaseModel):
+    class_name: str
+    bounding_box: List[float]
+    text: str

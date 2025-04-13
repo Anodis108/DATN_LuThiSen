@@ -7,4 +7,5 @@ from common.bases import BaseModel
 
 
 class APIOutput(BaseModel):
-    bboxes: List
+    bboxes: List[List[float]]
+    scores: List[float]

@@ -4,6 +4,8 @@ import cv2
 import numpy as np
 from api.helper.exception_handler import ExceptionHandler
 from api.helper.exception_handler import ResponseMessage
+from app.ocr import OCRInput
+from app.ocr import OCRService
 from common.logs import get_logger
 from common.utils import get_settings
 from fastapi import APIRouter
@@ -11,13 +13,9 @@ from fastapi import File
 from fastapi import status
 from fastapi import UploadFile
 from fastapi.encoders import jsonable_encoder
-from logic_app.app.OCR import CheckinInput
-from logic_app.app.OCR import CheckinService
-
-# from common.exceptions import FaceValidateException
 
 
-checkin = APIRouter(prefix='/v1')
+ocr = APIRouter(prefix='/v1')
 logger = get_logger(__name__)
 
 settings = get_settings()
@@ -26,8 +24,8 @@ settings = get_settings()
 # Define API input
 
 
-@checkin.post(
-    '/checkin',
+@ocr.post(
+    '/ocr',
     # response_model=APIOutput,
     responses={
         status.HTTP_200_OK: {
@@ -84,7 +82,7 @@ settings = get_settings()
         },
     },
 )
-async def face_checkin(file: UploadFile = File(...)):
+async def ocr_card(file: UploadFile = File(...)):
     exception_handler = ExceptionHandler(
         logger=logger.bind(), service_name=__name__,
     )
@@ -105,19 +103,19 @@ async def face_checkin(file: UploadFile = File(...)):
         )
     # Define application
     try:
-        logger.info('Load mode face checkin !!!')
-        checkin_model = CheckinService(settings=settings)
+        logger.info('Load mode card checkin !!!')
+        ocr_model = OCRService(settings=settings)
     except Exception as e:
         return exception_handler.handle_exception(
-            f'Failed to initialize face checkin model: {e}',
+            f'Failed to initialize card checkin model: {e}',
             extra={'file_name': file.filename},
         )
     # infer
     try:
-        face_checkin_result = checkin_model.process(
-            inputs=CheckinInput(image=img_array),
+        text_ocr_result = ocr_model.process(
+            inputs=OCRInput(image=img_array),
         )
-        return exception_handler.handle_success(jsonable_encoder(face_checkin_result))
+        return exception_handler.handle_success(jsonable_encoder(text_ocr_result))
     # except FaceValidateException as e:
     #     return exception_handler.handle_bad_request(
     #         message=f'Face validation failed: {e}',
