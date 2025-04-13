@@ -20,7 +20,7 @@ class CardAlignModel(BaseModel):
         img2 = img_origin[y1:y2, x1:x2]
 
         # Loading image using cv2
-        baseImg = cv2.imread(self.settings.card_align.baseImg_path)
+        baseImg = cv2.imread(self.settings.card_align.baseimg_path)
         # Declare image size, width height and chanel
         baseH, baseW, baseC = baseImg.shape
 

@@ -4,5 +4,5 @@ from common.bases import BaseModel
 
 
 class CardAlignSettings(BaseModel):
-    baseImg_path: str = 'common/weights/detect_cccd_best.pt'
+    baseimg_path: str
     per_match: float

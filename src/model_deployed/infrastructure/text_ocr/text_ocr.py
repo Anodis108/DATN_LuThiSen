@@ -7,8 +7,8 @@ import cv2
 import numpy as np
 from common.bases import BaseModel
 from common.bases import BaseService
+from common.logs.logs import get_logger
 from common.settings import Settings
-from model_deployed.common.logs.logs import get_logger
 from PIL import Image
 from vietocr.tool.config import Cfg
 from vietocr.tool.predictor import Predictor
