@@ -17,9 +17,3 @@ class APIInput(BaseModel):
 
 class APIOutput(BaseModel):
     info_text: List[Any]
-
-
-# class OCRResult(BaseModel):
-#     class_name: str
-#     bounding_box: List[Any]
-#     text: str
