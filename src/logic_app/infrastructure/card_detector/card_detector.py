@@ -15,7 +15,8 @@ class CardDetectorInput(BaseModel):
 
 
 class CardDectorOutput(BaseModel):
-    bboxes: list
+    bboxes: list[list[float]]
+    scores: list[float]
 
 
 class CardDetector(BaseService):
@@ -32,4 +33,5 @@ class CardDetector(BaseService):
 
         return CardDectorOutput(
             bboxes=response.json()['info']['bboxes'],
+            scores=response.json()['info']['scores'],
         )

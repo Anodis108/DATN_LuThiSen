@@ -1,5 +1,5 @@
 from __future__ import annotations
 
-from .card_align import CardAlignModel
+from .service import CardAlignModel
 
 __all__ = ['CardAlignModel']

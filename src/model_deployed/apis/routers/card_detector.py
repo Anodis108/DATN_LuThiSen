@@ -38,7 +38,11 @@ except Exception as e:
                     'example': {
                         'message': ResponseMessage.SUCCESS,
                         'info': {
-                            'bboxes': [1, 1, 1, 1],
+                            'bboxes': [
+                                [1, 1, 1, 1],
+                                [1, 1, 1, 1],
+                            ],
+                            'scores': [1, 0.5],
                         },
                     },
                 },

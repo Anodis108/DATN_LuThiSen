@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from pydantic import HttpUrl
 from pydantic_settings import BaseSettings
 
+from .models import CardAlignSettings
+
 # from .models import ChromaDB
 # from .models import PostgresSettings
 # test in local
@@ -19,7 +21,7 @@ class Settings(BaseSettings):
     # postgres: PostgresSettings
     # chromadb: ChromaDB
 
-    # embedding_thresh: float
+    card_align: CardAlignSettings
 
     class Config:
         env_nested_delimiter = '__'

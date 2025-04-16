@@ -8,11 +8,9 @@ from common.bases import BaseModel
 
 class APIInput(BaseModel):
     image: List[List[List[int]]]
-    bbox: List[float]
 
 
 class APIOutput(BaseModel):
     classes: List[str]
     bboxes: List[List[float]]
     confs: List[float]
-    # processed_image: str  # (base64-encoded string, optional)
