@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 import unittest
 
@@ -23,17 +24,23 @@ class TestOCRAPI(unittest.TestCase):
             }
             response = requests.post(self.api_url, files=files)
 
-        # In ra mã trạng thái và JSON phản hồi
+        # In ra mã trạng thái và JSON phản hồi với format đẹp
         print('Status Code:', response.status_code)
-        print('Response JSON:', response.json())
 
-        # Kiểm tra mã trạng thái của phản hồi
-        self.assertEqual(response.status_code, 200)
+        try:
+            json_data = response.json()
+            print('Response JSON:')
+            # In đẹp, giữ nguyên tiếng Việt nếu có
+            print(json.dumps(json_data, indent=4, ensure_ascii=False))
 
-        # Kiểm tra nội dung JSON trong phản hồi
-        json_data = response.json()
-        self.assertIn('message', json_data)
-        self.assertEqual(json_data['message'], 'Process successfully !!!')
+            # Kiểm tra mã trạng thái và nội dung
+            self.assertEqual(response.status_code, 200)
+            self.assertIn('message', json_data)
+            self.assertEqual(json_data['message'], 'Process successfully !!!')
+        except Exception as e:
+            print('Failed to parse JSON response:', e)
+            print('Raw Response:', response.text)
+            self.fail('Invalid JSON response received.')
         # self.assertIsNotNone(json_data['info'])
         # self.assertIn('info_text', json_data['info'])
         # self.assertGreater(len(json_data['info']['info_text']), 0)

@@ -25,7 +25,7 @@ class OCRInput(BaseModel):
 
 class OCROutput(BaseModel):
     # status: bool
-    results: list[dict]
+    results: list[list[dict]]
 
 
 class OCRService(BaseService):
@@ -110,7 +110,7 @@ class OCRService(BaseService):
                 logger.info(
                     f'OCR processing completed for bbox {bbox} in {round((time.perf_counter() - start) * 1000, 2)} ms',
                 )
-                results_all.append(text_ocr_out.dict())
+                results_all.append(text_ocr_out.results)
             except Exception as e:
                 logger.error(f'Failed to text ocr with bbox {bbox}: {e}')
                 continue
