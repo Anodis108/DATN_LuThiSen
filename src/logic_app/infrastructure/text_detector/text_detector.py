@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import List
-
 import numpy as np
 import requests  # type: ignore
 from common.bases import BaseModel
@@ -14,14 +12,12 @@ from common.settings import Settings
 
 class TextDetectorInput(BaseModel):
     img_origin: np.ndarray
-    bbox: List[int]
 
 
 class TextDectorOutput(BaseModel):
-    class_list: List[str]
-    bboxes_list: List[List[float]]
-    conf_list: List[float]
-    processed_image: np.ndarray
+    class_list: list
+    bboxes_list: list[list]
+    conf_list: list
 
 
 class TextDetector(BaseService):
@@ -29,14 +25,14 @@ class TextDetector(BaseService):
 
     def process(self, inputs: TextDetectorInput) -> TextDectorOutput:
         payload = {
-            'image': inputs.image.tolist(),
+            'image': inputs.img_origin.tolist(),
         }
         response = requests.post(
-            str(self.settings.host_Text_detector), json=payload,
+            str(self.settings.host_text_detector), json=payload,
         )
 
         return TextDectorOutput(
-            class_list=response.json()['info']['class_list'],
+            class_list=response.json()['info']['classes'],
             bboxes_list=response.json()['info']['bboxes'],
-            conf_list=response.json()['info']['conf_list'],
+            conf_list=response.json()['info']['confs'],
         )

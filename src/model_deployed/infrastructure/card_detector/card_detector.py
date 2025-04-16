@@ -70,7 +70,7 @@ class CardDetectorModel(BaseService):
         return scores, bboxes
 
     def nms(self, dets: np.ndarray) -> list[int]:
-        thresh = self.settings.detector.nms_thresh
+        thresh = self.settings.card_detector.conf
         x1 = dets[:, 0]
         y1 = dets[:, 1]
         x2 = dets[:, 2]

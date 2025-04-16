@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 import numpy as np
 from apis.helper.exception_handler import ExceptionHandler
 from apis.helper.exception_handler import ResponseMessage
@@ -13,7 +15,6 @@ from fastapi import status
 from fastapi.encoders import jsonable_encoder
 from infrastructure.text_detector import TextDetectorModel
 from infrastructure.text_detector import TextDetectorModelInput
-
 # import cv2
 
 text_detector = APIRouter(prefix='/v1')
@@ -39,7 +40,16 @@ except Exception as e:
                     'example': {
                         'message': ResponseMessage.SUCCESS,
                         'info': {
-                            'bboxes': [[1, 1, 1, 1]],
+                            'classes': ['birth', 'name'],
+                            'bboxes': [
+                                [1.0, 1.0, 1.0, 1.0],
+                                [2.0, 2.0, 2.0, 2.0],
+                            ],
+                            'confs': [1.0, 0.5],
+                            'processed_images': [
+                                [[0, 0, 0], [255, 255, 255]],
+                                [[128, 128, 128], [64, 64, 64]],
+                            ],
                         },
                     },
                 },
@@ -97,12 +107,11 @@ async def text_detect(inputs: APIInput = Body(...)):
     Returns:
         JSON response containing detected texts and bounding boxes.
     """
-
+    start_total = time.perf_counter()
     exception_handler = ExceptionHandler(
         logger=logger.bind(), service_name=__name__,
     )
 
-    # Kiểm tra đầu vào hợp lệ
     if inputs is None or not inputs.image:
         return exception_handler.handle_bad_request(
             'Invalid image data',
@@ -110,40 +119,37 @@ async def text_detect(inputs: APIInput = Body(...)):
         )
 
     try:
-        logger.info(f'Processing text detection for input: {inputs}')
-
-        # Chuyển ảnh và bbox sang numpy
-        img_array = np.array(inputs.image, dtype=np.uint8)
-        bbox_np = np.array(inputs.bbox, dtype=np.int32)
-
-        if img_array.ndim != 3:
-            raise ValueError('Input image must be a 3D RGB array')
-
-        if bbox_np.shape != (4,):
-            raise ValueError('Bounding box must be a list of 4 float values')
-
-        # Gọi model xử lý
-        response = await text_detector_model.process(
-            inputs=TextDetectorModelInput(
-                img_origin=img_array,
-                bbox=bbox_np,
-            ),
+        logger.info('Processing text detection ...')
+        logger.info(
+            'np.array(inputs.image)',
+            shape=np.array(inputs.image).shape,
         )
 
-        if not response.bboxes_list:
-            return exception_handler.handle_unprocessable_entity(
-                'No text detected in the image',
-                jsonable_encoder(inputs),
-            )
+        # text detector
+        t6 = time.perf_counter()
+        response = await text_detector_model.process(
+            inputs=TextDetectorModelInput(
+                img_processed=np.array(inputs.image, dtype=np.uint8),
+            ),
+        )
+        t7 = time.perf_counter()
+        logger.info(f'[Timer] Model processing: {(t7 - t6)*1000:.2f} ms')
 
-        # Tạo response model
+        t8 = time.perf_counter()
+        # handle response
         api_output = APIOutput(
             bboxes=response.bboxes_list,
             classes=response.class_list,
             confs=response.conf_list,
         )
+        t9 = time.perf_counter()
+        logger.info(f'[Timer] Build response model: {(t9 - t8)*1000:.2f} ms')
 
         logger.info('Text detection completed successfully.')
+
+        total_time = (time.perf_counter() - start_total) * 1000
+        logger.info(f'[Timer] Total API time: {total_time:.2f} ms')
+
         return exception_handler.handle_success(jsonable_encoder(api_output))
 
     except ValueError as ve:

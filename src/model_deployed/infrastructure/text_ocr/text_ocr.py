@@ -10,10 +10,9 @@ from common.bases import BaseService
 from common.logs.logs import get_logger
 from common.settings import Settings
 from PIL import Image
+from service.card_align import CardAlignModel
 from vietocr.tool.config import Cfg
 from vietocr.tool.predictor import Predictor
-
-from ..card_align import CardAlignModel
 
 logger = get_logger(__name__)
 
@@ -84,9 +83,11 @@ class TextOCRModel(BaseService):
 
         img_prepared = self.prepare_img(img)
 
-        text = self.model_loaded.predict(img_prepared)  # Lấy kết quả đầu tiên
+        text_model = self.model_loaded.predict(
+            img_prepared,
+        )  # Lấy kết quả đầu tiên
 
-        return text
+        return text_model
 
     def ndarray2PIL(self, img: np.ndarray):
         if isinstance(img,  np.ndarray):

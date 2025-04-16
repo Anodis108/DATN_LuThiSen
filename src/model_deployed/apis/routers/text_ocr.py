@@ -39,7 +39,13 @@ except Exception as e:
                     'example': {
                         'message': ResponseMessage.SUCCESS,
                         'info': {
-                            'bboxes': [[1, 1, 1, 1]],
+                            'info_text': [
+                                {
+                                    'class_name': 'name',
+                                    'bounding_box': [100.0, 200.0, 300.0, 400.0],
+                                    'text': 'Nguyen Van A',
+                                },
+                            ],
                         },
                     },
                 },
@@ -112,7 +118,7 @@ async def text_to_ocr(inputs: APIInput = Body(...)):
     try:
         # Convert input image to numpy array
         img_array = np.array(inputs.img, dtype=np.uint8)
-        bbox_np = np.array(inputs.bbox, dtype=np.int32)
+        bbox_np = np.array(inputs.bboxes, dtype=np.int32)
 
         # Log processing start
         logger.info('Starting OCR processing...')
@@ -122,12 +128,12 @@ async def text_to_ocr(inputs: APIInput = Body(...)):
             inputs=TextOCRModelInput(
                 img=img_array,
                 class_list=inputs.classes,
-                bboxes_list=bbox_np,
+                bboxes_list=bbox_np.tolist(),
             ),
         )
 
         # Check if OCR found any text
-        if not response.bboxes_list:
+        if not response.results:
             return exception_handler.handle_bad_request(
                 'No text detected in the image.',
                 jsonable_encoder(inputs),
@@ -143,7 +149,7 @@ async def text_to_ocr(inputs: APIInput = Body(...)):
             for r in response.results
         ]
 
-        api_output = APIOutput(info=info)
+        api_output = APIOutput(info_text=info)
 
         logger.info('OCR processing completed successfully.')
         return exception_handler.handle_success(jsonable_encoder(api_output))

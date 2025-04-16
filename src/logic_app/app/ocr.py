@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import time
+from functools import cached_property
+
 import numpy as np
 from common.bases import BaseModel
 from common.bases import BaseService
@@ -11,6 +14,7 @@ from infrastructure.text_detector import TextDetector
 from infrastructure.text_detector import TextDetectorInput
 from infrastructure.text_ocr import TextOCR
 from infrastructure.text_ocr import TextOCRInput
+from service.card_align import CardAlignModel
 
 logger = get_logger(__name__)
 
@@ -20,7 +24,7 @@ class OCRInput(BaseModel):
 
 
 class OCROutput(BaseModel):
-    status: bool
+    # status: bool
     results: list[dict]
 
 
@@ -39,42 +43,76 @@ class OCRService(BaseService):
     def _get_text_ocr(self) -> TextOCR:
         return TextOCR(settings=self.settings)
 
+    @cached_property
+    def _card_align(self) -> CardAlignModel:
+        return CardAlignModel(settings=self.settings)
+
     def process(self, inputs: OCRInput) -> OCROutput:
         # detect card
         try:
+            start = time.perf_counter()
             card_det_output = self._get_card_detector.process(
                 inputs=CardDetectorInput(
                     image=inputs.image,
                 ),
             )
-        except Exception as e:
-            logger.error(f'Failed to process card detection: {e}')
-            raise e  # stop and display full error message
-
-        # detext text
-        try:
-            text_det_out = self._get_text_detector.process(
-                inputs=TextDetectorInput(
-                    image=inputs.image,
-                    bbox=card_det_output.bboxes,
-                ),
+            logger.info(
+                f'Card detection completed in {round((time.perf_counter() - start) * 1000, 2)} ms',
             )
         except Exception as e:
             logger.error(f'Failed to process card detection: {e}')
             raise e  # stop and display full error message
 
-        # text ocr
-        try:
-            text_ocr_out = self._get_text_ocr.process(
-                inputs=TextOCRInput(
-                    img=text_det_out.processed_image,
-                    bboxes_list=text_det_out.bboxes_list,
-                    class_list=text_det_out.class_list,
-                ),
-            )
-            # if not text_ocr_out.results :
-            #     raise FaceValidateException('Face not satisfied !!!')
-        except Exception as e:
-            logger.error(f'Failed to text ocr: {e}')
-            return OCROutput(status=False)
-        return OCROutput(status=True, results=text_ocr_out)
+        results_all = []
+
+        for bbox in card_det_output.bboxes:
+            try:
+                # align card
+                start = time.perf_counter()
+                img_processed = self._card_align.align_img(
+                    img_origin=inputs.image,
+                    bbox=bbox,
+                )
+                logger.info(
+                    f'Card alignment completed for bbox {bbox} in {round((time.perf_counter() - start) * 1000, 2)} ms',
+                )
+            except Exception as e:
+                logger.error(f'Failed to align card with bbox {bbox}: {e}')
+                continue  # hoặc raise nếu muốn dừng luôn
+
+            # detect text
+            try:
+                start = time.perf_counter()
+                text_det_out = self._get_text_detector.process(
+                    inputs=TextDetectorInput(
+                        img_origin=img_processed,
+                    ),
+                )
+                logger.info(
+                    f'Text detection completed for bbox {bbox} in {round((time.perf_counter() - start) * 1000, 2)} ms',
+                )
+            except Exception as e:
+                logger.error(
+                    f'Failed to process text detection with bbox {bbox}: {e}',
+                )
+                continue
+
+            # OCR
+            try:
+                start = time.perf_counter()
+                text_ocr_out = self._get_text_ocr.process(
+                    inputs=TextOCRInput(
+                        img=img_processed,
+                        bboxes_list=text_det_out.bboxes_list,
+                        class_list=text_det_out.class_list,
+                    ),
+                )
+                logger.info(
+                    f'OCR processing completed for bbox {bbox} in {round((time.perf_counter() - start) * 1000, 2)} ms',
+                )
+                results_all.append(text_ocr_out.dict())
+            except Exception as e:
+                logger.error(f'Failed to text ocr with bbox {bbox}: {e}')
+                continue
+
+        return OCROutput(results=results_all)

@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 from api.helper.exception_handler import ExceptionHandler
 from api.helper.exception_handler import ResponseMessage
+from api.models.ocr_card import APIOutput
 from app.ocr import OCRInput
 from app.ocr import OCRService
 from common.logs import get_logger
@@ -34,7 +35,13 @@ settings = get_settings()
                     'example': {
                         'message': ResponseMessage.SUCCESS,
                         'info': {
-                            'status': True,
+                            'info_text': [
+                                {
+                                    'class_name': 'name',
+                                    'bounding_box': [100.0, 200.0, 300.0, 400.0],
+                                    'text': 'Nguyen Van A',
+                                },
+                            ],
                         },
                     },
                 },
@@ -87,42 +94,52 @@ async def ocr_card(file: UploadFile = File(...)):
         logger=logger.bind(), service_name=__name__,
     )
 
-    # Read image from UploadFile
     try:
+        logger.info('Received OCR request', extra={'file_name': file.filename})
         contents = await file.read()
 
-        # Convert the raw image data into a NumPy array
         nparr = np.frombuffer(contents, np.uint8)
-
-        # Decode the NumPy array into an OpenCV (BGR) image
         img_array = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+        if img_array is None:
+            raise ValueError('Failed to decode image - result is None')
     except Exception as e:
         return exception_handler.handle_exception(
-            e=f'Error while reading file: {e}',
-            extra={'file_name': file.filename},
+            err_msg=f'Error while reading and decoding file: {e}',
+            details={'file_name': file.filename},
         )
     # Define application
     try:
-        logger.info('Load mode card checkin !!!')
+        logger.info(
+            'Initializing OCR model...',
+            extra={'file_name': file.filename},
+        )
         ocr_model = OCRService(settings=settings)
+        logger.info(
+            'OCR model initialized successfully',
+            extra={'file_name': file.filename},
+        )
     except Exception as e:
         return exception_handler.handle_exception(
-            f'Failed to initialize card checkin model: {e}',
-            extra={'file_name': file.filename},
+            f'Failed to initialize OCR model: {e}',
+            details={'file_name': file.filename},
         )
     # infer
     try:
+        logger.info(
+            'Running OCR inference...', extra={
+                'file_name': file.filename,
+            },
+        )
         text_ocr_result = ocr_model.process(
             inputs=OCRInput(image=img_array),
         )
-        return exception_handler.handle_success(jsonable_encoder(text_ocr_result))
-    # except FaceValidateException as e:
-    #     return exception_handler.handle_bad_request(
-    #         message=f'Face validation failed: {e}',
-    #         extra={'face_image': file.filename},
-    #     )
+
+        api_output = APIOutput(info_text=text_ocr_result.results)
+        return exception_handler.handle_success(jsonable_encoder(api_output))
+
     except Exception as e:
         return exception_handler.handle_exception(
-            e=f'Error while reading file: {e}',
-            extra={'file_name': file.filename},
+            f'OCR processing failed: {e}',
+            details={'file_name': file.filename},
         )

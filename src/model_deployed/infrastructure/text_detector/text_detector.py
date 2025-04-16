@@ -10,33 +10,21 @@ from common.logs.logs import get_logger
 from common.settings import Settings
 from ultralytics import YOLO
 
-from ..card_align import CardAlignModel
-
-# import cv2
-
-
 logger = get_logger(__name__)
 
 
 class TextDetectorModelInput(BaseModel):
-    img_origin: np.ndarray
-    bbox: np.ndarray
-    # max_num: int = 0
+    img_processed: np.ndarray
 
 
 class TextDetectorModelOutput(BaseModel):
     class_list: List[str]
     bboxes_list: List[np.ndarray]
     conf_list: List[float]
-    processed_image: np.ndarray
 
 
 class TextDetectorModel(BaseService):
     settings: Settings
-
-    @cached_property
-    def card_align(self) -> CardAlignModel:
-        return CardAlignModel(settings=self.settings)
 
     @cached_property
     def model_loaded(self):
@@ -45,20 +33,15 @@ class TextDetectorModel(BaseService):
 
     async def process(self, inputs: TextDetectorModelInput) -> TextDetectorModelOutput:
 
-        processed_img = self.card_align.align_img(
-            img_origin=inputs.img_origin, bbox=inputs.bbox,
-        )
-
         # Perform face detection using the model
         class_list, bboxes_list, scores_list = self.forward(
-            processed_img, self.settings.text_detector.conf,
+            inputs.img_processed, self.settings.text_detector.conf,
         )
 
         return TextDetectorModelOutput(
             bboxes_list=bboxes_list,
             class_list=class_list,
             conf_list=scores_list,
-            processed_image=processed_img,
         )
 
     def forward(self, img: np.ndarray, threshold: float) -> tuple:
