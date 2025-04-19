@@ -8,8 +8,8 @@ from queue import Queue
 import cv2
 import numpy as np
 from common.settings import Settings
-from demo_app.config import camera_path
-from demo_app.config import img_logo_path
+from config import camera_path
+from config import img_logo_path
 from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
@@ -51,6 +51,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.is_video = False
         self.setting = Settings()
         self.image_path = None
+        self.test = 'test'
 
     def connect_signal(self):
         self.ui.btn_choose_path.clicked.connect(self.choose_path_img)
@@ -98,6 +99,10 @@ class MainWindow(QtWidgets.QMainWindow):
     def run_image_processing(self):
         image = cv2.imread(self.image_path)
         if image is not None:
+            self.display_results(
+                image, self.test, self.test,
+                self.test, self.test, self.test, self.test,
+            )
             self.display_image_on_label(self.ui.label_input, image)
         else:
             logging.warning('Không đọc được ảnh.')
@@ -109,7 +114,6 @@ class MainWindow(QtWidgets.QMainWindow):
             self.thread_callapi.start()
 
         self.thread_callapi.call_api(self.setting.host_ocr_service, image)
-        self.update_results(mode='push')
 
     def run_video_stream(self):
         self.video_capture = cv2.VideoCapture(self.image_path)
@@ -122,6 +126,16 @@ class MainWindow(QtWidgets.QMainWindow):
     def create_threads(self):
         self.thread_callapi = APICallerThread()
         self.thread_callapi.start()
+
+        if not hasattr(self, 'image_path') or not self.image_path:
+            return
+
+        if self.is_video:
+            # Nếu là video → chạy xử lý luồng
+            self.run_video_stream()
+        else:
+            # Nếu là ảnh → hiển thị ảnh
+            self.run_image_processing()
 
     def display_results(self, image, name, born, HKTT, classes, course, MSV):
         self.update_results(mode='push')
@@ -158,8 +172,13 @@ class MainWindow(QtWidgets.QMainWindow):
         ]
 
         if mode == 'push':
+            print(1)
             for i in range(1, 0, -1):
                 label_img_results[i].clear()
+                if label_img_results[i-1].pixmap() is not None:
+                    label_img_results[i].setPixmap(
+                        label_img_results[i-1].pixmap().copy(),
+                    )
                 label_img_results[i].setPixmap(label_img_results[i-1].pixmap())
                 label_name_results[i].setText(label_name_results[i-1].text())
                 label_born_results[i].setText(label_born_results[i-1].text())
@@ -169,7 +188,7 @@ class MainWindow(QtWidgets.QMainWindow):
                     label_course_results[i-1].text(),
                 )
                 label_MSV_results[i].setText(label_MSV_results[i-1].text())
-
+            print(2)
         elif mode == 'clear':
             for i in range(4):
                 label_img_results[i].setPixmap(
@@ -210,15 +229,7 @@ class MainWindow(QtWidgets.QMainWindow):
         #             red_factor = 0.2
         #             image = cv2.addWeighted(red_image, red_factor, image, 1 - red_factor, 0)
         #     self.display_image_on_label(self.ui.label_input,image)
-        if not hasattr(self, 'image_path') or not self.image_path:
-            return
 
-        if self.is_video:
-            # Nếu là video → chạy xử lý luồng
-            self.run_video_stream()
-        else:
-            # Nếu là ảnh → hiển thị ảnh
-            self.run_image_processing()
         self.update()
 
     def read_video_frame(self):
