@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'main_window.ui'
+# Form implementation generated from reading ui file 'main_window2.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.11
 #
@@ -15,7 +15,7 @@ from PyQt5 import QtWidgets
 class Ui_MainWindow:
     def setupUi(self, MainWindow):
         MainWindow.setObjectName('MainWindow')
-        MainWindow.resize(1284, 859)
+        MainWindow.resize(1133, 787)
         MainWindow.setStyleSheet('')
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setStyleSheet('background: rgba(50,50,50,0.5)')
@@ -182,8 +182,8 @@ class Ui_MainWindow:
         self.frame_btn_1.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_btn_1.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_btn_1.setObjectName('frame_btn_1')
-        self.gridLayout_7 = QtWidgets.QGridLayout(self.frame_btn_1)
-        self.gridLayout_7.setObjectName('gridLayout_7')
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.frame_btn_1)
+        self.horizontalLayout_2.setObjectName('horizontalLayout_2')
         self.btn_start = QtWidgets.QPushButton(self.frame_btn_1)
         self.btn_start.setMaximumSize(QtCore.QSize(125, 16777215))
         font = QtGui.QFont()
@@ -214,14 +214,13 @@ class Ui_MainWindow:
         )
         icon1 = QtGui.QIcon()
         icon1.addPixmap(
-            QtGui.QPixmap(
-                '../../../../../../Hoc_Tap/Tu_Hoc/A_AI/ATIN/Day11_Demo_HatMaskGloves/App_VIB/src/uis/E:/Qt_Designer/start_icon.jpg',
-            ), QtGui.QIcon.Normal, QtGui.QIcon.Off,
+            QtGui.QPixmap('E:/Qt_Designer/start_icon.jpg'),
+            QtGui.QIcon.Normal, QtGui.QIcon.Off,
         )
         self.btn_start.setIcon(icon1)
         self.btn_start.setIconSize(QtCore.QSize(30, 35))
         self.btn_start.setObjectName('btn_start')
-        self.gridLayout_7.addWidget(self.btn_start, 0, 0, 1, 1)
+        self.horizontalLayout_2.addWidget(self.btn_start)
         self.btn_link_cam = QtWidgets.QPushButton(self.frame_btn_1)
         self.btn_link_cam.setMaximumSize(QtCore.QSize(125, 16777215))
         font = QtGui.QFont()
@@ -257,7 +256,7 @@ class Ui_MainWindow:
         self.btn_link_cam.setIcon(icon2)
         self.btn_link_cam.setIconSize(QtCore.QSize(35, 35))
         self.btn_link_cam.setObjectName('btn_link_cam')
-        self.gridLayout_7.addWidget(self.btn_link_cam, 0, 1, 1, 1)
+        self.horizontalLayout_2.addWidget(self.btn_link_cam)
         self.verticalLayout_3.addWidget(self.frame_btn_1)
         self.frame_btn_2 = QtWidgets.QFrame(self.frame_buttons)
         self.frame_btn_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -345,8 +344,10 @@ class Ui_MainWindow:
         self.horizontalLayout.addWidget(self.fr_main_functions)
         self.widget_input = QtWidgets.QWidget(self.frame_input)
         self.widget_input.setObjectName('widget_input')
-        self.gridLayout_10 = QtWidgets.QGridLayout(self.widget_input)
-        self.gridLayout_10.setObjectName('gridLayout_10')
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.widget_input)
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_5.setSpacing(0)
+        self.verticalLayout_5.setObjectName('verticalLayout_5')
         self.label_input = QtWidgets.QLabel(self.widget_input)
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Ignored,
@@ -366,7 +367,7 @@ class Ui_MainWindow:
         self.label_input.setScaledContents(True)
         self.label_input.setAlignment(QtCore.Qt.AlignCenter)
         self.label_input.setObjectName('label_input')
-        self.gridLayout_10.addWidget(self.label_input, 0, 0, 2, 1)
+        self.verticalLayout_5.addWidget(self.label_input)
         self.horizontalLayout.addWidget(self.widget_input)
         self.gridLayout_4.addWidget(self.frame_input, 0, 0, 1, 1)
         self.frame_output = QtWidgets.QFrame(self.home_page)
@@ -407,8 +408,11 @@ class Ui_MainWindow:
         self.horizontalLayout_3.setObjectName('horizontalLayout_3')
         self.widget_img_result1 = QtWidgets.QWidget(self.fr_info_result1)
         self.widget_img_result1.setObjectName('widget_img_result1')
+        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.widget_img_result1)
+        self.verticalLayout_10.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_10.setSpacing(0)
+        self.verticalLayout_10.setObjectName('verticalLayout_10')
         self.label_img_result1 = QtWidgets.QLabel(self.widget_img_result1)
-        self.label_img_result1.setGeometry(QtCore.QRect(0, 0, 295, 244))
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Ignored,
         )
@@ -426,35 +430,38 @@ class Ui_MainWindow:
         self.label_img_result1.setScaledContents(True)
         self.label_img_result1.setAlignment(QtCore.Qt.AlignCenter)
         self.label_img_result1.setObjectName('label_img_result1')
+        self.verticalLayout_10.addWidget(self.label_img_result1)
         self.horizontalLayout_3.addWidget(self.widget_img_result1)
         self.widget_info_result1 = QtWidgets.QWidget(self.fr_info_result1)
         self.widget_info_result1.setObjectName('widget_info_result1')
-        self.gridLayout_13 = QtWidgets.QGridLayout(self.widget_info_result1)
-        self.gridLayout_13.setObjectName('gridLayout_13')
-        self.label_course_result1 = QtWidgets.QLabel(self.widget_info_result1)
-        self.label_course_result1.setStyleSheet('color: white')
-        self.label_course_result1.setScaledContents(True)
-        self.label_course_result1.setObjectName('label_course_result1')
-        self.gridLayout_13.addWidget(self.label_course_result1, 4, 0, 1, 1)
+        self.verticalLayout_11 = QtWidgets.QVBoxLayout(
+            self.widget_info_result1,
+        )
+        self.verticalLayout_11.setObjectName('verticalLayout_11')
         self.label_name_result1 = QtWidgets.QLabel(self.widget_info_result1)
         self.label_name_result1.setObjectName('label_name_result1')
-        self.gridLayout_13.addWidget(self.label_name_result1, 0, 0, 1, 1)
-        self.label_HKTT_result1 = QtWidgets.QLabel(self.widget_info_result1)
-        self.label_HKTT_result1.setObjectName('label_HKTT_result1')
-        self.gridLayout_13.addWidget(self.label_HKTT_result1, 2, 0, 1, 1)
-        self.label_class_result1 = QtWidgets.QLabel(self.widget_info_result1)
-        self.label_class_result1.setStyleSheet('color: white')
-        self.label_class_result1.setScaledContents(True)
-        self.label_class_result1.setObjectName('label_class_result1')
-        self.gridLayout_13.addWidget(self.label_class_result1, 3, 0, 1, 1)
-        self.label_MSV_result1 = QtWidgets.QLabel(self.widget_info_result1)
-        self.label_MSV_result1.setObjectName('label_MSV_result1')
-        self.gridLayout_13.addWidget(self.label_MSV_result1, 5, 0, 1, 1)
+        self.verticalLayout_11.addWidget(self.label_name_result1)
         self.label_born_result1 = QtWidgets.QLabel(self.widget_info_result1)
         self.label_born_result1.setStyleSheet('color: white')
         self.label_born_result1.setScaledContents(True)
         self.label_born_result1.setObjectName('label_born_result1')
-        self.gridLayout_13.addWidget(self.label_born_result1, 1, 0, 1, 1)
+        self.verticalLayout_11.addWidget(self.label_born_result1)
+        self.label_HKTT_result1 = QtWidgets.QLabel(self.widget_info_result1)
+        self.label_HKTT_result1.setObjectName('label_HKTT_result1')
+        self.verticalLayout_11.addWidget(self.label_HKTT_result1)
+        self.label_class_result1 = QtWidgets.QLabel(self.widget_info_result1)
+        self.label_class_result1.setStyleSheet('color: white')
+        self.label_class_result1.setScaledContents(True)
+        self.label_class_result1.setObjectName('label_class_result1')
+        self.verticalLayout_11.addWidget(self.label_class_result1)
+        self.label_course_result1 = QtWidgets.QLabel(self.widget_info_result1)
+        self.label_course_result1.setStyleSheet('color: white')
+        self.label_course_result1.setScaledContents(True)
+        self.label_course_result1.setObjectName('label_course_result1')
+        self.verticalLayout_11.addWidget(self.label_course_result1)
+        self.label_MSV_result1 = QtWidgets.QLabel(self.widget_info_result1)
+        self.label_MSV_result1.setObjectName('label_MSV_result1')
+        self.verticalLayout_11.addWidget(self.label_MSV_result1)
         self.horizontalLayout_3.addWidget(self.widget_info_result1)
         self.verticalLayout_12.addWidget(self.fr_info_result1)
         self.horizontalLayout_9.addWidget(self.widget_result1)
@@ -513,38 +520,40 @@ class Ui_MainWindow:
         self.horizontalLayout_4.addWidget(self.widget_img_result2)
         self.widget_info_result2 = QtWidgets.QWidget(self.fr_info_result2)
         self.widget_info_result2.setObjectName('widget_info_result2')
-        self.gridLayout_12 = QtWidgets.QGridLayout(self.widget_info_result2)
-        self.gridLayout_12.setObjectName('gridLayout_12')
+        self.verticalLayout_17 = QtWidgets.QVBoxLayout(
+            self.widget_info_result2,
+        )
+        self.verticalLayout_17.setObjectName('verticalLayout_17')
         self.label_name_result2 = QtWidgets.QLabel(self.widget_info_result2)
         self.label_name_result2.setStyleSheet('color: white')
         self.label_name_result2.setScaledContents(True)
         self.label_name_result2.setObjectName('label_name_result2')
-        self.gridLayout_12.addWidget(self.label_name_result2, 0, 0, 1, 1)
-        self.label_course_result2 = QtWidgets.QLabel(self.widget_info_result2)
-        self.label_course_result2.setStyleSheet('color: white')
-        self.label_course_result2.setScaledContents(True)
-        self.label_course_result2.setObjectName('label_course_result2')
-        self.gridLayout_12.addWidget(self.label_course_result2, 4, 0, 1, 1)
+        self.verticalLayout_17.addWidget(self.label_name_result2)
         self.label_born_result2 = QtWidgets.QLabel(self.widget_info_result2)
         self.label_born_result2.setStyleSheet('color: white')
         self.label_born_result2.setScaledContents(True)
         self.label_born_result2.setObjectName('label_born_result2')
-        self.gridLayout_12.addWidget(self.label_born_result2, 1, 0, 1, 1)
+        self.verticalLayout_17.addWidget(self.label_born_result2)
         self.label_HKTT_result2 = QtWidgets.QLabel(self.widget_info_result2)
         self.label_HKTT_result2.setStyleSheet('color: white')
         self.label_HKTT_result2.setScaledContents(True)
         self.label_HKTT_result2.setObjectName('label_HKTT_result2')
-        self.gridLayout_12.addWidget(self.label_HKTT_result2, 2, 0, 1, 1)
-        self.label_MSV_result2 = QtWidgets.QLabel(self.widget_info_result2)
-        self.label_MSV_result2.setStyleSheet('color: white')
-        self.label_MSV_result2.setScaledContents(True)
-        self.label_MSV_result2.setObjectName('label_MSV_result2')
-        self.gridLayout_12.addWidget(self.label_MSV_result2, 5, 0, 1, 1)
+        self.verticalLayout_17.addWidget(self.label_HKTT_result2)
         self.label_class_result2 = QtWidgets.QLabel(self.widget_info_result2)
         self.label_class_result2.setStyleSheet('color: white')
         self.label_class_result2.setScaledContents(True)
         self.label_class_result2.setObjectName('label_class_result2')
-        self.gridLayout_12.addWidget(self.label_class_result2, 3, 0, 1, 1)
+        self.verticalLayout_17.addWidget(self.label_class_result2)
+        self.label_course_result2 = QtWidgets.QLabel(self.widget_info_result2)
+        self.label_course_result2.setStyleSheet('color: white')
+        self.label_course_result2.setScaledContents(True)
+        self.label_course_result2.setObjectName('label_course_result2')
+        self.verticalLayout_17.addWidget(self.label_course_result2)
+        self.label_MSV_result2 = QtWidgets.QLabel(self.widget_info_result2)
+        self.label_MSV_result2.setStyleSheet('color: white')
+        self.label_MSV_result2.setScaledContents(True)
+        self.label_MSV_result2.setObjectName('label_MSV_result2')
+        self.verticalLayout_17.addWidget(self.label_MSV_result2)
         self.horizontalLayout_4.addWidget(self.widget_info_result2)
         self.verticalLayout_14.addWidget(self.fr_info_result2)
         self.horizontalLayout_9.addWidget(self.widget_result2)
@@ -586,61 +595,61 @@ class Ui_MainWindow:
         self.gridLayout_3.setHorizontalSpacing(2)
         self.gridLayout_3.setVerticalSpacing(5)
         self.gridLayout_3.setObjectName('gridLayout_3')
-        self.btn_home = QtWidgets.QPushButton(self.frame_sidebar)
-        self.btn_home.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.btn_home.setStyleSheet('background-color: gray;')
-        self.btn_home.setText('')
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(
-            QtGui.QPixmap('E:/Qt_Designer/home_icon.png'),
-            QtGui.QIcon.Normal, QtGui.QIcon.Off,
-        )
-        self.btn_home.setIcon(icon5)
-        self.btn_home.setIconSize(QtCore.QSize(50, 45))
-        self.btn_home.setObjectName('btn_home')
-        self.gridLayout_3.addWidget(self.btn_home, 1, 0, 1, 1)
-        self.btn_sidebar = QtWidgets.QPushButton(self.frame_sidebar)
-        self.btn_sidebar.setStyleSheet('background-color: gray;')
-        self.btn_sidebar.setText('')
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(
-            QtGui.QPixmap(
-                'E:/Qt_Designer/sidebar_icon.png',
-            ), QtGui.QIcon.Normal, QtGui.QIcon.Off,
-        )
-        self.btn_sidebar.setIcon(icon6)
-        self.btn_sidebar.setIconSize(QtCore.QSize(50, 40))
-        self.btn_sidebar.setObjectName('btn_sidebar')
-        self.gridLayout_3.addWidget(self.btn_sidebar, 0, 0, 1, 1)
-        self.btn_maps = QtWidgets.QPushButton(self.frame_sidebar)
-        self.btn_maps.setStyleSheet('background-color: gray;')
-        self.btn_maps.setText('')
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(
-            QtGui.QPixmap('E:/Qt_Designer/maps_icon.png'),
-            QtGui.QIcon.Normal, QtGui.QIcon.Off,
-        )
-        self.btn_maps.setIcon(icon7)
-        self.btn_maps.setIconSize(QtCore.QSize(50, 45))
-        self.btn_maps.setObjectName('btn_maps')
-        self.gridLayout_3.addWidget(self.btn_maps, 2, 0, 1, 1)
-        self.btn_setting = QtWidgets.QPushButton(self.frame_sidebar)
-        self.btn_setting.setStyleSheet('background-color: gray;')
-        self.btn_setting.setText('')
-        icon8 = QtGui.QIcon()
-        icon8.addPixmap(
-            QtGui.QPixmap(
-                'E:/Qt_Designer/setting_icon.png',
-            ), QtGui.QIcon.Normal, QtGui.QIcon.Off,
-        )
-        self.btn_setting.setIcon(icon8)
-        self.btn_setting.setIconSize(QtCore.QSize(50, 45))
-        self.btn_setting.setObjectName('btn_setting')
-        self.gridLayout_3.addWidget(self.btn_setting, 4, 0, 1, 1)
         self.label_hide_item = QtWidgets.QLabel(self.frame_sidebar)
         self.label_hide_item.setText('')
         self.label_hide_item.setObjectName('label_hide_item')
         self.gridLayout_3.addWidget(self.label_hide_item, 3, 0, 1, 1)
+        self.btn_maps = QtWidgets.QPushButton(self.frame_sidebar)
+        self.btn_maps.setStyleSheet('background-color: gray;')
+        self.btn_maps.setText('')
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(
+            QtGui.QPixmap('E:/Qt_Designer/maps_icon.png'),
+            QtGui.QIcon.Normal, QtGui.QIcon.Off,
+        )
+        self.btn_maps.setIcon(icon5)
+        self.btn_maps.setIconSize(QtCore.QSize(50, 45))
+        self.btn_maps.setObjectName('btn_maps')
+        self.gridLayout_3.addWidget(self.btn_maps, 2, 0, 1, 1)
+        self.btn_home = QtWidgets.QPushButton(self.frame_sidebar)
+        self.btn_home.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.btn_home.setStyleSheet('background-color: gray;')
+        self.btn_home.setText('')
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(
+            QtGui.QPixmap('E:/Qt_Designer/home_icon.png'),
+            QtGui.QIcon.Normal, QtGui.QIcon.Off,
+        )
+        self.btn_home.setIcon(icon6)
+        self.btn_home.setIconSize(QtCore.QSize(50, 45))
+        self.btn_home.setObjectName('btn_home')
+        self.gridLayout_3.addWidget(self.btn_home, 1, 0, 1, 1)
+        self.btn_setting = QtWidgets.QPushButton(self.frame_sidebar)
+        self.btn_setting.setStyleSheet('background-color: gray;')
+        self.btn_setting.setText('')
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(
+            QtGui.QPixmap(
+                'E:/Qt_Designer/setting_icon.png',
+            ), QtGui.QIcon.Normal, QtGui.QIcon.Off,
+        )
+        self.btn_setting.setIcon(icon7)
+        self.btn_setting.setIconSize(QtCore.QSize(50, 45))
+        self.btn_setting.setObjectName('btn_setting')
+        self.gridLayout_3.addWidget(self.btn_setting, 4, 0, 1, 1)
+        self.btn_sidebar = QtWidgets.QPushButton(self.frame_sidebar)
+        self.btn_sidebar.setStyleSheet('background-color: gray;')
+        self.btn_sidebar.setText('')
+        icon8 = QtGui.QIcon()
+        icon8.addPixmap(
+            QtGui.QPixmap(
+                'E:/Qt_Designer/sidebar_icon.png',
+            ), QtGui.QIcon.Normal, QtGui.QIcon.Off,
+        )
+        self.btn_sidebar.setIcon(icon8)
+        self.btn_sidebar.setIconSize(QtCore.QSize(50, 40))
+        self.btn_sidebar.setObjectName('btn_sidebar')
+        self.gridLayout_3.addWidget(self.btn_sidebar, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.frame_sidebar, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -651,7 +660,7 @@ class Ui_MainWindow:
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate('MainWindow', 'MainWindow'))
         self.le_cam_path.setPlaceholderText(
-            _translate('MainWindow', 'Add Path Here'),
+            _translate('MainWindow', 'Add Path Video Here'),
         )
         self.btn_choose_path.setText(_translate('MainWindow', ' Choose Path'))
         self.btn_start.setText(_translate('MainWindow', ' Process'))
@@ -659,18 +668,18 @@ class Ui_MainWindow:
         self.btn_pause.setText(_translate('MainWindow', ' Pause'))
         self.btn_clear.setText(_translate('MainWindow', ' Clear'))
         self.label_input.setText(_translate('MainWindow', 'Input Image'))
-        self.label_course_result1.setText(_translate('MainWindow', 'Khóa học'))
         self.label_name_result1.setText(_translate('MainWindow', 'Họ tên'))
+        self.label_born_result1.setText(_translate('MainWindow', 'Ngày sinh'))
         self.label_HKTT_result1.setText(_translate('MainWindow', 'HKTT'))
         self.label_class_result1.setText(_translate('MainWindow', 'Lớp'))
+        self.label_course_result1.setText(_translate('MainWindow', 'Khóa học'))
         self.label_MSV_result1.setText(_translate('MainWindow', 'Mã SV'))
-        self.label_born_result1.setText(_translate('MainWindow', 'Ngày sinh'))
         self.label_name_result2.setText(_translate('MainWindow', 'Họ tên'))
-        self.label_course_result2.setText(_translate('MainWindow', 'Khóa học'))
         self.label_born_result2.setText(_translate('MainWindow', 'Ngày sinh'))
         self.label_HKTT_result2.setText(_translate('MainWindow', 'HKTT'))
-        self.label_MSV_result2.setText(_translate('MainWindow', 'Mã SV'))
         self.label_class_result2.setText(_translate('MainWindow', 'Lớp'))
+        self.label_course_result2.setText(_translate('MainWindow', 'Khóa học'))
+        self.label_MSV_result2.setText(_translate('MainWindow', 'Mã SV'))
 
 
 if __name__ == '__main__':

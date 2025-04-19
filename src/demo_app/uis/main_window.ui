@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1284</width>
+    <width>1200</width>
     <height>859</height>
    </rect>
   </property>
@@ -694,37 +694,30 @@ border: 2px solid lightgray;</string>
                     </property>
                     <item>
                      <widget class="QWidget" name="widget_img_result1" native="true">
-                      <widget class="QLabel" name="label_img_result1">
-                       <property name="geometry">
-                        <rect>
-                         <x>0</x>
-                         <y>0</y>
-                         <width>295</width>
-                         <height>244</height>
-                        </rect>
+                      <layout class="QVBoxLayout" name="verticalLayout">
+                       <property name="spacing">
+                        <number>0</number>
                        </property>
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
+                       <property name="leftMargin">
+                        <number>0</number>
                        </property>
-                       <property name="frameShape">
-                        <enum>QFrame::Box</enum>
+                       <property name="topMargin">
+                        <number>0</number>
                        </property>
-                       <property name="text">
-                        <string/>
+                       <property name="rightMargin">
+                        <number>0</number>
                        </property>
-                       <property name="pixmap">
-                        <pixmap>E:/Qt_Designer/fire_icon.jpg</pixmap>
+                       <property name="bottomMargin">
+                        <number>0</number>
                        </property>
-                       <property name="scaledContents">
-                        <bool>true</bool>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignCenter</set>
-                       </property>
-                      </widget>
+                       <item>
+                        <widget class="QLabel" name="label_img_result1">
+                         <property name="text">
+                          <string/>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                     <item>
@@ -743,10 +736,16 @@ border: 2px solid lightgray;</string>
                          </property>
                         </widget>
                        </item>
-                       <item row="0" column="0">
-                        <widget class="QLabel" name="label_name_result1">
+                       <item row="1" column="0">
+                        <widget class="QLabel" name="label_born_result1">
+                         <property name="styleSheet">
+                          <string notr="true">color: white</string>
+                         </property>
                          <property name="text">
-                          <string>Họ tên</string>
+                          <string>Ngày sinh</string>
+                         </property>
+                         <property name="scaledContents">
+                          <bool>true</bool>
                          </property>
                         </widget>
                        </item>
@@ -754,6 +753,13 @@ border: 2px solid lightgray;</string>
                         <widget class="QLabel" name="label_HKTT_result1">
                          <property name="text">
                           <string>HKTT</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="5" column="0">
+                        <widget class="QLabel" name="label_MSV_result1">
+                         <property name="text">
+                          <string>Mã SV</string>
                          </property>
                         </widget>
                        </item>
@@ -770,23 +776,10 @@ border: 2px solid lightgray;</string>
                          </property>
                         </widget>
                        </item>
-                       <item row="5" column="0">
-                        <widget class="QLabel" name="label_MSV_result1">
+                       <item row="0" column="0">
+                        <widget class="QLabel" name="label_name_result1">
                          <property name="text">
-                          <string>Mã SV</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="1" column="0">
-                        <widget class="QLabel" name="label_born_result1">
-                         <property name="styleSheet">
-                          <string notr="true">color: white</string>
-                         </property>
-                         <property name="text">
-                          <string>Ngày sinh</string>
-                         </property>
-                         <property name="scaledContents">
-                          <bool>true</bool>
+                          <string>Họ tên</string>
                          </property>
                         </widget>
                        </item>
