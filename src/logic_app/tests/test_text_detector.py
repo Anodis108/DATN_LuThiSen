@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import unittest
 
 import cv2
@@ -17,7 +18,10 @@ class TestTextDetector(unittest.TestCase):
 
     def test_api_text_detection(self):
         test_image = cv2.imread(self.img_path)
-        print('Image shape:', test_image.shape, 'dtype:', test_image.dtype)
+        print(
+            '🖼️ Image shape:', test_image.shape,
+            '| dtype:', test_image.dtype,
+        )
 
         dummy_bbox = [
             341.795654296875, 896.8245849609375,
@@ -27,22 +31,16 @@ class TestTextDetector(unittest.TestCase):
 
         result = self.text_detector.process(inputs=inputs)
 
-        print(jsonable_encoder(result))
+        # ✅ In kết quả dưới dạng JSON format đẹp
+        result_json = jsonable_encoder(result)
+        print('\n🎯 JSON Result:\n')
+        print(json.dumps(result_json, indent=4, ensure_ascii=False))
 
-        print('bboxes_list', result.bboxes_list)
-        print('class_list', result.class_list)
-        print('conf_list', result.conf_list)
-        # # Kiểm tra các trường cần thiết có tồn tại
-        # self.assertIn('class_list', result.dict())
-        # self.assertIn('bboxes_list', result.dict())
-        # self.assertIn('conf_list', result.dict())
-        # self.assertIn('processed_image', result.dict())
+        # # ✅ Nếu muốn in riêng từng phần:
+        # print('\n📦 Bboxes:', result.bboxes_list)
+        # print('🏷️ Classes:', result.class_list)
+        # print('📊 Confidences:', result.conf_list)
 
-        # # Kiểm tra kiểu dữ liệu
-        # self.assertIsInstance(result.class_list, list)
-        # self.assertIsInstance(result.bboxes_list, list)
-        # self.assertIsInstance(result.conf_list, list)
-        # self.assertIsInstance(result.processed_image, list)
 
-        # for conf in result.conf_list:
-        #     self.assertIsInstance(conf, float)
+if __name__ == '__main__':
+    unittest.main()

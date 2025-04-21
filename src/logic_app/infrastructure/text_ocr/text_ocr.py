@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from typing import Any
 from typing import List
 from typing import Union
 
@@ -22,7 +21,7 @@ class TextOCRInput(BaseModel):
 
 
 class TextOCROutput(BaseModel):
-    results: List[Any]
+    results: dict
 
 
 class TextOCR(BaseService):
@@ -38,4 +37,4 @@ class TextOCR(BaseService):
             str(self.settings.host_text_ocr), json=payload,
         )
 
-        return TextOCROutput(results=response.json()['info']['info_text'])
+        return TextOCROutput(results=response.json()['info'])

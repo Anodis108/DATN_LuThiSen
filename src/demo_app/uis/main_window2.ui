@@ -181,6 +181,12 @@
                     </property>
                     <item>
                      <widget class="QLabel" name="label_avatar">
+                      <property name="styleSheet">
+                       <string notr="true">#label_avatar {
+    background-color: white;  /* Màu nền trắng */
+}
+</string>
+                      </property>
                       <property name="text">
                        <string/>
                       </property>

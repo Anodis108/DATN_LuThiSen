@@ -73,6 +73,12 @@ class Ui_MainWindow:
         self.horizontalLayout_5.setSpacing(0)
         self.horizontalLayout_5.setObjectName('horizontalLayout_5')
         self.label_avatar = QtWidgets.QLabel(self.frame_avatar)
+        self.label_avatar.setStyleSheet(
+            '#label_avatar {\n'
+            '    background-color: white;  /* Màu nền trắng */\n'
+            '}\n'
+            '',
+        )
         self.label_avatar.setText('')
         self.label_avatar.setPixmap(
             QtGui.QPixmap(
@@ -89,7 +95,7 @@ class Ui_MainWindow:
             'QFrame#frame_file_path\n'
             '{\n'
             '    color: white;\n'
-            '    border-radius: 15px; \n'
+            '    border-radius: 15px;\n'
             '    border: 2px solid white;\n'
             '}\n'
             '',
@@ -137,7 +143,7 @@ class Ui_MainWindow:
             '{\n'
             '   background-color: rgba(255,255,255,0.4);\n'
             '    color: white;\n'
-            '    border-radius: 5px; \n'
+            '    border-radius: 5px;\n'
             '    border: 2px solid white;\n'
             '}\n'
             'QPushButton:hover#btn_choose_path\n'
@@ -168,7 +174,7 @@ class Ui_MainWindow:
             'QFrame#frame_buttons\n'
             '{\n'
             '    color: white;\n'
-            '    border-radius: 15px; \n'
+            '    border-radius: 15px;\n'
             '    border: 2px solid white;\n'
             '}\n'
             '',
@@ -196,7 +202,7 @@ class Ui_MainWindow:
             '{\n'
             '    background-color: rgba(255, 255, 255, 0.4);\n'
             '    color: white;\n'
-            '    border-radius: 15px; \n'
+            '    border-radius: 15px;\n'
             '    border: 2px solid white;\n'
             '}\n'
             'QPushButton:hover#btn_start\n'
@@ -233,7 +239,7 @@ class Ui_MainWindow:
             '{\n'
             '   background-color: rgba(255, 255, 255, 0.4);\n'
             '    color: white;\n'
-            '    border-radius: 15px; \n'
+            '    border-radius: 15px;\n'
             '    border: 2px solid white;\n'
             '}\n'
             'QPushButton:hover#btn_link_cam\n'
@@ -276,7 +282,7 @@ class Ui_MainWindow:
             '{\n'
             '    background-color: rgba(255, 255, 255, 0.4);\n'
             '    color: white;\n'
-            '    border-radius: 15px; \n'
+            '    border-radius: 15px;\n'
             '    border: 2px solid white;\n'
             '}\n'
             'QPushButton:hover#btn_pause\n'
@@ -313,7 +319,7 @@ class Ui_MainWindow:
             '{\n'
             '   background-color: rgba(255, 255, 255, 0.4);\n'
             '    color: white;\n'
-            '    border-radius: 15px; \n'
+            '    border-radius: 15px;\n'
             '    border: 2px solid white;\n'
             '}\n'
             'QPushButton:hover#btn_clear\n'
@@ -381,7 +387,7 @@ class Ui_MainWindow:
         self.widget_result1 = QtWidgets.QWidget(self.frame_output)
         self.widget_result1.setStyleSheet(
             'color: white;\n'
-            'border-radius: 15px; \n'
+            'border-radius: 15px;\n'
             'border: 2px solid lightgray;',
         )
         self.widget_result1.setObjectName('widget_result1')
@@ -467,7 +473,7 @@ class Ui_MainWindow:
         self.horizontalLayout_9.addWidget(self.widget_result1)
         self.widget_result2 = QtWidgets.QWidget(self.frame_output)
         self.widget_result2.setStyleSheet(
-            'border-radius: 15px; \n'
+            'border-radius: 15px;\n'
             'border: 2px solid lightgray;',
         )
         self.widget_result2.setObjectName('widget_result2')
