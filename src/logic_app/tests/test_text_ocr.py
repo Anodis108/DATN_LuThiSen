@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import unittest
 
 import cv2
@@ -16,30 +17,52 @@ class TestTextOCR(unittest.TestCase):
         self.img_path = '/home/anodi108/Desktop/project/Do_An_Tot_Nghiep/DATN_LuThiSen/src/model_deployed/processed_output.jpg'
 
         self.bboxes_list = [
-            [443.92, 440.61, 676.26, 508.55],
-            [50.83, 685.98, 272.60, 734.06],
-            [324.82, 375.64, 602.99, 427.21],
-            [328.45, 437.50, 680.15, 509.06],
-            [468.21, 376.13, 603.65, 425.35],
-            [328.27, 587.17, 592.29, 643.94],
-            [646.16, 370.61, 922.67, 429.67],
-            [848.46, 517.72, 1095.63, 574.21],
-            [475.71, 449.05, 683.80, 503.54],
-            [286.65, 32.61, 1228.35, 126.44],
-            [600.45, 186.84, 789.79, 258.04],
-            [50.85, 652.01, 273.07, 733.51],
-            [326.94, 540.66, 617.33, 643.52],
-            [343.97, 515.61, 889.62, 570.29],
-            [321.96, 265.17, 823.43, 362.08],
+            [
+                634.2853393554688,
+                589.3724365234375,
+                890.7731323242188,
+                639.2056884765625,
+            ],
+            [
+                525.900146484375,
+                301.1031799316406,
+                796.80859375,
+                361.1376647949219,
+            ],
+            [
+                51.94629669189453,
+                692.9230346679688,
+                273.922119140625,
+                730.7155151367188,
+            ],
+            [
+                502.302978515625,
+                444.47406005859375,
+                1146.979736328125,
+                502.43115234375,
+            ],
+            [
+                650.5380859375,
+                375.4815673828125,
+                921.237548828125,
+                422.485595703125,
+            ],
+            [
+                453.7305908203125,
+                517.524169921875,
+                1101.737548828125,
+                569.0948486328125,
+            ],
         ]
 
         self.class_list = [
-            'birth', 'birth', 'birth', 'birth', 'birth', 'birth', 'birth', 'birth',
-            'birth', 'origin', 'birth', 'birth', 'birth', 'name', 'no',
+            'Course', 'Name', 'Msv', 'HKTT', 'Date', 'Class',
         ]
 
     def test_api_text_ocr(self):
         test_image = cv2.imread(self.img_path)
+        if test_image is None:
+            raise FileNotFoundError(f'Không thể đọc ảnh tại: {self.img_path}')
         print('Image shape:', test_image.shape, 'dtype:', test_image.dtype)
 
         inputs = TextOCRInput(
@@ -50,13 +73,15 @@ class TestTextOCR(unittest.TestCase):
 
         result = self.text_ocr.process(inputs=inputs)
 
-        # Print kết quả JSON
-        print(jsonable_encoder(result))
+        # ✅ In kết quả dưới dạng JSON đẹp (pretty-print)
+        print('\n--- RESPONSE JSON ---')
+        result_json = jsonable_encoder(result)
+        print(json.dumps(result_json, indent=4, ensure_ascii=False))
 
-        # Nếu result có dạng list dicts
+        # Nếu có kết quả cụ thể hơn cần in
         print('\n--- RESULTS ---')
-        # for i, r in enumerate(result.results):
-        #     print(f'[{i}] Text:', r)
+        for i, r in enumerate(result.results):
+            print(f'[{i}] {r}')
 
         print('Số lượng kết quả:', len(result.results))
 

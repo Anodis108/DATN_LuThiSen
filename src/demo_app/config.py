@@ -17,7 +17,7 @@ model_path_segment = os.path.join(
 audio_path = os.path.join(ROOT,  r'resource/audio')
 img_result_path = os.path.join(ROOT,  r'resource/img')
 
-img_logo_path = os.path.join(ROOT, r'logo.ico')
+img_logo_path = os.path.join(ROOT, r'HIT-01.ico')
 SERVER_IP = '192.168.1.78'  # IP của Raspberry Pi
 PORT = 12345
 TIME_TO_PUSH_EVENT = 5

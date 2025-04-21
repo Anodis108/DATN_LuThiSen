@@ -66,7 +66,10 @@ class CardAlignModel(BaseModel):
         return img_final
 
     def process2white_black(self, img: np.ndarray) -> np.ndarray:
+        # PATH = '/home/anodi108/Desktop/project/Do_An_Tot_Nghiep/DATN_LuThiSen/resource/data/cropped_outputs'
         # convert to grayscale
+        # cv2.imwrite('/home/anodi108/Desktop/project/Do_An_Tot_Nghiep/DATN_LuThiSen/resource/data/cropped_outputs/processed_img.png', img)
+
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         gray = cv2.multiply(gray, 1.5)
 
@@ -80,5 +83,8 @@ class CardAlignModel(BaseModel):
         th, threshed = cv2.threshold(
             normed, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY,
         )
-
+        # cv2.imwrite(f"{PATH}/debug_gray.png", gray)
+        # cv2.imwrite(f"{PATH}/debug_divided.png", normed)
+        # cv2.imwrite(f"{PATH}debug_thresh.png", threshed)
+        # cv2.imwrite('/home/anodi108/Desktop/project/Do_An_Tot_Nghiep/DATN_LuThiSen/resource/data/cropped_outputs/processed_img1.png', threshed)
         return threshed
