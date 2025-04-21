@@ -16,4 +16,9 @@ class APIInput(BaseModel):
 
 
 class APIOutput(BaseModel):
-    info_text: List[Any]
+    cls: str
+    course: str
+    date: str
+    hktt: str
+    msv: str
+    name: str

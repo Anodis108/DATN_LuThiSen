@@ -3,6 +3,7 @@ from __future__ import annotations
 import time
 from functools import cached_property
 
+import cv2
 import numpy as np
 from common.bases import BaseModel
 from common.bases import BaseService
@@ -25,7 +26,7 @@ class OCRInput(BaseModel):
 
 class OCROutput(BaseModel):
     # status: bool
-    results: list[list[dict]]
+    results: list[dict]
 
 
 class OCRService(BaseService):
@@ -76,6 +77,10 @@ class OCRService(BaseService):
                 logger.info(
                     f'Card alignment completed for bbox {bbox} in {round((time.perf_counter() - start) * 1000, 2)} ms',
                 )
+                cv2.imwrite(
+                    '/home/anodi108/Desktop/project/Do_An_Tot_Nghiep/DATN_LuThiSen/resource/data/cropped_outputs/aligned_card.png', img_processed,
+                )
+
             except Exception as e:
                 logger.error(f'Failed to align card with bbox {bbox}: {e}')
                 continue  # hoặc raise nếu muốn dừng luôn

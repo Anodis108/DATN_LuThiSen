@@ -139,17 +139,14 @@ async def text_to_ocr(inputs: APIInput = Body(...)):
                 jsonable_encoder(inputs),
             )
 
-        # Format response
-        info = [
-            {
-                'class_name': r['class'],
-                'bounding_box': r['bounding_box'],
-                'text': r['text'],
-            }
-            for r in response.results
-        ]
-
-        api_output = APIOutput(info_text=info)
+        api_output = APIOutput(
+            cls=response.results['Class'],
+            course=response.results['Course'],
+            date=response.results['Date'],
+            hktt=response.results['HKTT'],
+            msv=response.results['Msv'],
+            name=response.results['Name'],
+        )
 
         logger.info('OCR processing completed successfully.')
         return exception_handler.handle_success(jsonable_encoder(api_output))
