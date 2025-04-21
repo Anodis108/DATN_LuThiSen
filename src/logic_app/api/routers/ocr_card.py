@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 import cv2
 import numpy as np
 from api.helper.exception_handler import ExceptionHandler
@@ -37,9 +39,12 @@ settings = get_settings()
                         'info': {
                             'info_text': [
                                 {
-                                    'class_name': 'name',
-                                    'bounding_box': [100.0, 200.0, 300.0, 400.0],
-                                    'text': 'Nguyen Van A',
+                                    'cls': 'name_class',
+                                    'course': 'course',
+                                    'date': 'bored day',
+                                    'hktt': 'Place',
+                                    'msv': 'number',
+                                    'name': 'name',
                                 },
                             ],
                         },
@@ -96,27 +101,40 @@ async def ocr_card(file: UploadFile = File(...)):
 
     try:
         logger.info('Received OCR request', extra={'file_name': file.filename})
-        contents = await file.read()
+        t0 = time.perf_counter()
 
+        contents = await file.read()
         nparr = np.frombuffer(contents, np.uint8)
         img_array = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
         if img_array is None:
             raise ValueError('Failed to decode image - result is None')
+
+        t1 = time.perf_counter()
+        logger.info(
+            f'Image read and decode completed in {t1 - t0:.4f} seconds',
+            extra={'file_name': file.filename},
+        )
+
     except Exception as e:
         return exception_handler.handle_exception(
             err_msg=f'Error while reading and decoding file: {e}',
             details={'file_name': file.filename},
         )
+
     # Define application
     try:
         logger.info(
             'Initializing OCR model...',
             extra={'file_name': file.filename},
         )
+        t2 = time.perf_counter()
+
         ocr_model = OCRService(settings=settings)
+
+        t3 = time.perf_counter()
         logger.info(
-            'OCR model initialized successfully',
+            f'OCR model initialized successfully in {t3 - t2:.4f} seconds',
             extra={'file_name': file.filename},
         )
     except Exception as e:
@@ -124,15 +142,23 @@ async def ocr_card(file: UploadFile = File(...)):
             f'Failed to initialize OCR model: {e}',
             details={'file_name': file.filename},
         )
+
     # infer
     try:
         logger.info(
-            'Running OCR inference...', extra={
-                'file_name': file.filename,
-            },
+            'Running OCR inference...',
+            extra={'file_name': file.filename},
         )
+        t4 = time.perf_counter()
+
         text_ocr_result = ocr_model.process(
             inputs=OCRInput(image=img_array),
+        )
+
+        t5 = time.perf_counter()
+        logger.info(
+            f'OCR inference completed in {t5 - t4:.4f} seconds',
+            extra={'file_name': file.filename},
         )
 
         api_output = APIOutput(info_text=text_ocr_result.results)

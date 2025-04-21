@@ -24,7 +24,7 @@ class TextOCRModelInput(BaseModel):
 
 
 class TextOCRModelOutput(BaseModel):
-    results: List[dict]
+    results: dict
 
 
 class TextOCRModel(BaseService):
@@ -44,23 +44,24 @@ class TextOCRModel(BaseService):
 
     async def process(self, inputs: TextOCRModelInput) -> TextOCRModelOutput:
 
-        processed_img = self.card_align.process2white_black(img=inputs.img)
-
-        extracted_results = []
+        # processed_img = self.card_align.process2white_black(img=inputs.img)
+        # cv2.imwrite('/home/anodi108/Desktop/project/Do_An_Tot_Nghiep/DATN_LuThiSen/resource/data/cropped_outputs/processed_img2.png', processed_img)
+        extracted_results = dict()
 
         for cls, bbox in zip(inputs.class_list, inputs.bboxes_list):
             x_min, y_min, x_max, y_max = map(int, bbox)
 
             # Cắt vùng ảnh theo bounding box
-            cropped_img = processed_img[y_min:y_max, x_min:x_max]
+            cropped_img = inputs.img[y_min:y_max, x_min:x_max]
+            processed_img = self.card_align.process2white_black(
+                img=cropped_img,
+            )
 
             # Dự đoán văn bản trong vùng ảnh
-            text = self.forward(cropped_img)
-            extracted_results.append({
-                'class': cls,
-                'bounding_box': bbox,
-                'text': text,
-            })
+            text = self.forward(processed_img)
+            extracted_results[cls] = text
+            # filename = f"/home/anodi108/Desktop/project/Do_An_Tot_Nghiep/DATN_LuThiSen/resource/data/cropped_outputs/_{cls}.png"
+            # cv2.imwrite(filename, cropped_img)
 
         return TextOCRModelOutput(
             results=extracted_results,

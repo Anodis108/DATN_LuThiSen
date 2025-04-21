@@ -7,9 +7,10 @@ from queue import Queue
 
 import cv2
 import numpy as np
+import openpyxl
 from common.settings import Settings
-from demo_app.config import camera_path
-from demo_app.config import img_logo_path
+from config import camera_path
+from config import img_logo_path
 from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
@@ -51,6 +52,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.is_video = False
         self.setting = Settings()
         self.image_path = None
+        self.test = 'test'
 
     def connect_signal(self):
         self.ui.btn_choose_path.clicked.connect(self.choose_path_img)
@@ -96,20 +98,36 @@ class MainWindow(QtWidgets.QMainWindow):
         self.create_threads()
 
     def run_image_processing(self):
-        image = cv2.imread(self.image_path)
-        if image is not None:
-            self.display_image_on_label(self.ui.label_input, image)
-        else:
-            logging.warning('Không đọc được ảnh.')
-            return
-
         # Kiểm tra thread_callapi có tồn tại không
         if not hasattr(self, 'thread_callapi') or self.thread_callapi is None:
             self.thread_callapi = APICallerThread()
             self.thread_callapi.start()
 
-        self.thread_callapi.call_api(self.setting.host_ocr_service, image)
-        self.update_results(mode='push')
+        image = cv2.imread(self.image_path)
+        if image is not None:
+            self.response = self.thread_callapi.call_api(
+                self.setting.host_ocr_service, image,
+            )
+            self.display_results(
+                image=cv2.imread(
+                    '/home/anodi108/Desktop/project/Do_An_Tot_Nghiep/DATN_LuThiSen/resource/data/cropped_outputs/aligned_card.png',
+                ),
+                classes=self.response.cls,
+                course=self.response.course,
+                born=self.response.date,
+                HKTT=self.response.hktt,
+                MSV=self.response.msv,
+                name=self.response.name,
+            )
+            self.display_image_on_label(self.ui.label_input, image)
+
+            self.save_to_excel(
+                response=self.response,
+                file_name='student_data.xlsx',
+            )
+        else:
+            logging.warning('Không đọc được ảnh.')
+            return
 
     def run_video_stream(self):
         self.video_capture = cv2.VideoCapture(self.image_path)
@@ -122,6 +140,16 @@ class MainWindow(QtWidgets.QMainWindow):
     def create_threads(self):
         self.thread_callapi = APICallerThread()
         self.thread_callapi.start()
+
+        if not hasattr(self, 'image_path') or not self.image_path:
+            return
+
+        if self.is_video:
+            # Nếu là video → chạy xử lý luồng
+            self.run_video_stream()
+        else:
+            # Nếu là ảnh → hiển thị ảnh
+            self.run_image_processing()
 
     def display_results(self, image, name, born, HKTT, classes, course, MSV):
         self.update_results(mode='push')
@@ -160,6 +188,10 @@ class MainWindow(QtWidgets.QMainWindow):
         if mode == 'push':
             for i in range(1, 0, -1):
                 label_img_results[i].clear()
+                if label_img_results[i-1].pixmap() is not None:
+                    label_img_results[i].setPixmap(
+                        label_img_results[i-1].pixmap().copy(),
+                    )
                 label_img_results[i].setPixmap(label_img_results[i-1].pixmap())
                 label_name_results[i].setText(label_name_results[i-1].text())
                 label_born_results[i].setText(label_born_results[i-1].text())
@@ -169,9 +201,8 @@ class MainWindow(QtWidgets.QMainWindow):
                     label_course_results[i-1].text(),
                 )
                 label_MSV_results[i].setText(label_MSV_results[i-1].text())
-
         elif mode == 'clear':
-            for i in range(4):
+            for i in range(2):
                 label_img_results[i].setPixmap(
                     QtGui.QPixmap('./resources/icons/folder_icon.png'),
                 )
@@ -189,37 +220,29 @@ class MainWindow(QtWidgets.QMainWindow):
         ui_label.clear()
         ui_label.setPixmap(QtGui.QPixmap.fromImage(pixmap))
 
-    def paintEvent(self, e):
-        # self.obj_center = (0, 0)
-        # if self.stream_queue.qsize() > 0:
-        #     text, origin_image = self.stream_queue.get()
-        #     image = origin_image.copy()
-        #     warning_level = self.thread_work.event.warning_level
-        #     if warning_level != "200":
-        #         # print(warning_level)
-        #         current_time = time.time()
-        #         if (current_time - self.start_time) >= TIME_TO_PUSH_EVENT:
-        #             self.display_results(image, self.place, text)
-        #             self.save_img(image, img_result_path)
-        #             # self.thread_client.send_message(warning_level)
-        #             self.start_time = current_time
-        #             self.thread_audio.play_audio(warning_level)
-        #             # Hiệu ứng cảnh báo đỏ
-        #             red_image = np.zeros(image.shape, image.dtype)
-        #             red_image[:, :] = (0, 0, 255)
-        #             red_factor = 0.2
-        #             image = cv2.addWeighted(red_image, red_factor, image, 1 - red_factor, 0)
-        #     self.display_image_on_label(self.ui.label_input,image)
-        if not hasattr(self, 'image_path') or not self.image_path:
-            return
+    # def paintEvent(self, e):
+    #     # self.obj_center = (0, 0)
+    #     # if self.stream_queue.qsize() > 0:
+    #     #     text, origin_image = self.stream_queue.get()
+    #     #     image = origin_image.copy()
+    #     #     warning_level = self.thread_work.event.warning_level
+    #     #     if warning_level != "200":
+    #     #         # print(warning_level)
+    #     #         current_time = time.time()
+    #     #         if (current_time - self.start_time) >= TIME_TO_PUSH_EVENT:
+    #     #             self.display_results(image, self.place, text)
+    #     #             self.save_img(image, img_result_path)
+    #     #             # self.thread_client.send_message(warning_level)
+    #     #             self.start_time = current_time
+    #     #             self.thread_audio.play_audio(warning_level)
+    #     #             # Hiệu ứng cảnh báo đỏ
+    #     #             red_image = np.zeros(image.shape, image.dtype)
+    #     #             red_image[:, :] = (0, 0, 255)
+    #     #             red_factor = 0.2
+    #     #             image = cv2.addWeighted(red_image, red_factor, image, 1 - red_factor, 0)
+    #     #     self.display_image_on_label(self.ui.label_input,image)
 
-        if self.is_video:
-            # Nếu là video → chạy xử lý luồng
-            self.run_video_stream()
-        else:
-            # Nếu là ảnh → hiển thị ảnh
-            self.run_image_processing()
-        self.update()
+    #     self.update()
 
     def read_video_frame(self):
         if self.video_capture.isOpened():
@@ -241,4 +264,57 @@ class MainWindow(QtWidgets.QMainWindow):
         cv2.imwrite(save_path, image)
 
     def send_data_to_api(self, api_url, data):
-        self.api_thread.call_api(api_url, data)
+        self.thread_callapi.call_api(api_url, data)
+
+    def save_to_excel(self, response, file_name='student_data.xlsx'):
+        # Kiểm tra xem file đã tồn tại chưa
+        try:
+            # Nếu file đã tồn tại, mở nó
+            wb = openpyxl.load_workbook(file_name)
+            sheet = wb.active
+        except FileNotFoundError:
+            # Nếu file chưa tồn tại, tạo file mới
+            wb = openpyxl.Workbook()
+            sheet = wb.active
+            sheet.title = 'Dữ liệu'
+            # Tiêu đề cột nếu là file mới
+            sheet.append([
+                'MSV', 'Tên', 'Khóa học',
+                'Ngày sinh', 'HKTT', 'Lớp',
+            ])
+
+        # Kiểm tra xem MSV đã tồn tại trong file chưa
+        msv_exists = False
+        for row in sheet.iter_rows(min_row=2, max_row=sheet.max_row, min_col=1, max_col=1):
+            for cell in row:
+                if cell.value == response.msv:  # So sánh với MSV
+                    msv_exists = True
+                    break
+            if msv_exists:
+                break
+
+        if msv_exists:
+            print(
+                f'MSV {response.msv} đã tồn tại trong file Excel. Không thêm dữ liệu mới.',
+            )
+        else:
+            # Thêm dữ liệu vào hàng mới nếu MSV chưa có
+            data = [
+                response.msv,
+                response.name,
+                response.course,
+                response.date,
+                response.hktt,
+                response.cls,
+            ]
+            sheet.append(data)
+
+            # Đánh dấu theo MSV (Màu nền ô theo mã sinh viên)
+            for row in sheet.iter_rows(min_row=2, max_row=sheet.max_row, min_col=1, max_col=1):
+                for cell in row:
+                    if cell.value == response.msv:
+                        cell.style = 'Good'  # Sử dụng phong cách "Good" của openpyxl
+
+            # Lưu vào file
+            wb.save(file_name)
+            print(f'Dữ liệu đã được lưu vào {file_name}')
