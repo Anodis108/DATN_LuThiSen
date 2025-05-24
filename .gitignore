@@ -3,7 +3,7 @@ __pycache__
 # weights/
 .vscode
 
-.env
+# .env
 *.npy
 src/model_deployed/tests/img_kpoint.json
 src/model_deployed/tests/landmark_box.json
@@ -12,3 +12,4 @@ src/checkin/tests/chroma_db
 
 .mypy_cache
 *.pth
+.sen_datn2/

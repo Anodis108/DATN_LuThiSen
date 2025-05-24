@@ -14,7 +14,6 @@ load_dotenv(find_dotenv('.env'), override=True)
 
 
 class Settings(BaseSettings):
-    # embedding: EmbeddingSettings
     card_detector: CardDetectorSettings
     text_detector: TextDetectorSettings
     text_ocr: TextOCRSettings

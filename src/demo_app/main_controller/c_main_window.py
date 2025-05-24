@@ -110,7 +110,7 @@ class MainWindow(QtWidgets.QMainWindow):
             )
             self.display_results(
                 image=cv2.imread(
-                    '/home/anodi108/Desktop/project/Do_An_Tot_Nghiep/DATN_LuThiSen/resource/data/cropped_outputs/aligned_card.png',
+                    r'E:\DATN\DATN_LuThiSen\resource\data\cropped_outputs\aligned_card.png',
                 ),
                 classes=self.response.cls,
                 course=self.response.course,

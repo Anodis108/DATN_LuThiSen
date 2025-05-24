@@ -4,7 +4,7 @@ from common.bases import BaseModel
 
 
 class CardDetectorSettings(BaseModel):
-    model_path: str = 'common/weights/detect_cccd_best.pt'
+    model_path: str 
     conf: float
 
     # nms_thresh: float

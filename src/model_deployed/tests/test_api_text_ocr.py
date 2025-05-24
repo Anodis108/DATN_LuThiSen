@@ -11,7 +11,7 @@ class TestTextOCRAPI(unittest.TestCase):
 
     def setUp(self) -> None:
         """Cài đặt ban đầu"""
-        self.image_path = '/home/anodi108/Desktop/project/Do_An_Tot_Nghiep/DATN_LuThiSen/src/model_deployed/processed_output.jpg'
+        self.image_path = r'E:\DATN\DATN_LuThiSen\src\model_deployed\processed_output.jpg'
         self.api_url = 'http://localhost:5000/v1/text_ocr'  # Thay đổi nếu API khác
 
         # Bboxes, classes và confs từ kết quả thực tế

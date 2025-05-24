@@ -1,0 +1,18 @@
+B1:
+E:\DATN\DATN_LuThiSen> 
+.sen_datn2\Scripts\activate
+
+B2: đi vào model 
+cd E:\DATN\DATN_LuThiSen\src\model_deployed
+(.sen_datn2) E:\DATN\DATN_LuThiSen\src\model_deployed
+chạy: uvicorn main:app --host 127.0.0.1 --port 5000 --reload
+
+B3: đi vào logic 
+cd  E:\DATN\DATN_LuThiSen\src\logic_app
+(.sen_datn2)  E:\DATN\DATN_LuThiSen\src\logic_app
+chạy: uvicorn main:app --host 127.0.0.1 --port 5001 --reload
+
+B3: đi vào app 
+cd  E:\DATN\DATN_LuThiSen\src\logic_app
+(.sen_datn2)  E:\DATN\DATN_LuThiSen\src\demo_app
+chạy: python main.py

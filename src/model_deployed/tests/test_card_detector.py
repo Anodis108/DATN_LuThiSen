@@ -15,7 +15,7 @@ class TestCardDetector(unittest.TestCase):
         self.card_detector_model = CardDetectorModel(settings=self.settings)
 
     def test_detect(self):
-        image_path = '/home/anodi108/Desktop/project/Do_An_Tot_Nghiep/DATN_LuThiSen/resource/data/demo_data_card/LuThihSen3.jpg'
+        image_path = r'E:\DATN\DATN_LuThiSen\resource\data\demo_data_card\LuThihSen3.jpg'
         img = cv2.imread(image_path)
         print(img)
         # Chuyển sang RGB

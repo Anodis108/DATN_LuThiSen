@@ -9,7 +9,7 @@ import requests  # type: ignore
 class TestCardDetectorAPI(unittest.TestCase):
     def setUp(self) -> None:
         # Đường dẫn tới ảnh mẫu dùng để test
-        self.image_path = '/home/anodi108/Desktop/project/Do_An_Tot_Nghiep/DATN_LuThiSen/resource/data/demo_data_card/LuThihSen3.jpg'  # bạn có thể thay đổi
+        self.image_path = r'E:\DATN\DATN_LuThiSen\resource\data\demo_data_card\LuThihSen3.jpg'  # bạn có thể thay đổi
         self.api_url = 'http://localhost:5000/v1/card_detector'
 
         if not os.path.exists(self.image_path):
