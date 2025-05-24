@@ -14,3 +14,4 @@ src/checkin/tests/chroma_db
 *.pth
 .sen_datn2/
 .sen_datn2/
+.sen_datn2/
