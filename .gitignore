@@ -13,3 +13,4 @@ src/checkin/tests/chroma_db
 .mypy_cache
 *.pth
 .sen_datn2/
+.sen_datn2/
