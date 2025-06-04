@@ -6,7 +6,7 @@ from os.path import dirname
 ROOT = dirname(__file__)
 
 # video_path = r"resource/data/real_test.mp4"
-camera_path = r'rtsp://root:Atin@123@192.168.1.235/axis-media/media.amp'
+camera_path = r'/mnt/d/project/DATN/DATN_LuThiSen/resource/data/demo_data_card/LuThihSen3.jpg'
 model_path_detect = os.path.join(
     ROOT, r'resource/weights/last_detect_head_07042025_v2_y8m_640.pt',
 )

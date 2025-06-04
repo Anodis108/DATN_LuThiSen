@@ -54,6 +54,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.image_path = None
         self.test = 'test'
 
+        self.ui.btn_link_cam.hide()
+        self.ui.btn_pause.hide()
+
     def connect_signal(self):
         self.ui.btn_choose_path.clicked.connect(self.choose_path_img)
         self.ui.btn_start.clicked.connect(self.start_thread)
