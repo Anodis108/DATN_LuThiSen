@@ -30,13 +30,13 @@ class MainWindow(QtWidgets.QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.setWindowTitle('Detect Hat, Helmet and Mask')
+        self.setWindowTitle('OCR thẻ SV')
 
         self.create_queue()
         self.start_time = 0
         self.connect_signal()
         self.timer = QtCore.QTimer(self)
-        self.place = 'Detect Hat, \nHelmet and Mask'
+        self.place = 'the SV'
         self.level = ''
         # self.type = ""
         self.obj_center = ()

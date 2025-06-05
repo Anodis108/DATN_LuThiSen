@@ -78,7 +78,7 @@ class OCRService(BaseService):
                     f'Card alignment completed for bbox {bbox} in {round((time.perf_counter() - start) * 1000, 2)} ms',
                 )
                 cv2.imwrite(
-                    '/home/anodi108/Desktop/project/Do_An_Tot_Nghiep/DATN_LuThiSen/resource/data/cropped_outputs/aligned_card.png', img_processed,
+                    '/mnt/d/project/DATN/DATN_LuThiSen/resource/data/cropped_outputs/aligned_card.png', img_processed,
                 )
 
             except Exception as e:

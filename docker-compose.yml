@@ -20,6 +20,9 @@ services:
       - type: bind
         source: ./src/logic_app
         target: /app
+      - type: bind
+        source: ./resource
+        target: /app/resource
     command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5001", "--reload"]
     environment:
       - HOST_CARD_DETECTOR=${HOST_CARD_DETECTOR}
@@ -40,6 +43,9 @@ services:
       - type: bind
         source: ./src/model_deployed
         target: /app
+      - type: bind
+        source: ./resource
+        target: /app/resource
     command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000", "--reload"]
     environment:
       # Card Detector Settings
@@ -61,5 +67,5 @@ services:
       - TEXT_OCR__CNN_PRETRAINED=${TEXT_OCR__CNN_PRETRAINED}
       - TEXT_OCR__VOCAB=${TEXT_OCR__VOCAB}
 
-      - CARD_ALIGN__BASEIMG_PATH=${CARD_ALIGN__BASEIMG_PATH}
-      - CARD_ALIGN__PER_MATCH=${CARD_ALIGN__PER_MATCH}
+      # - CARD_ALIGN__BASEIMG_PATH=${CARD_ALIGN__BASEIMG_PATH}
+      # - CARD_ALIGN__PER_MATCH=${CARD_ALIGN__PER_MATCH}
